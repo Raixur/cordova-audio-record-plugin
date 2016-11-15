@@ -17,4 +17,4 @@ AudioRecorder.install = function () {
   return window.plugins.audioRecorder;
 };
 
-cordova.addConstructor(AudioRecorderAPI.install);
+cordova.addConstructor(AudioRecorder.install);
