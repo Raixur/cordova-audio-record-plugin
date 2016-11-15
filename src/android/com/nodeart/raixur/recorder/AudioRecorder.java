@@ -8,7 +8,6 @@ import org.json.JSONException;
 import android.media.MediaRecorder;
 import android.media.MediaPlayer;
 import android.media.AudioManager;
-import android.os.CountDownTimer;
 import android.os.Environment;
 import android.content.Context;
 import java.util.UUID;
@@ -20,14 +19,14 @@ public class AudioRecorder extends CordovaPlugin {
 
   private MediaRecorder myRecorder;
   private String outputFile;
-  private CountDownTimer countDowntimer;
 
   @Override
   public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
     Context context = cordova.getActivity().getApplicationContext();
 
+    System.out.println("Entered...");
     if (action.equals("record")) {
-
+      System.out.println("Recording...");
       if (args.length() >= 1) {
         outputFile = args.getString(0);
       } else {
@@ -35,6 +34,7 @@ public class AudioRecorder extends CordovaPlugin {
           + UUID.randomUUID().toString() + ".m4a";
       }
 
+      System.out.println("Path: " + outputFile);
       myRecorder = new MediaRecorder();
       myRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
       myRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
@@ -45,8 +45,11 @@ public class AudioRecorder extends CordovaPlugin {
       myRecorder.setOutputFile(outputFile);
 
       try {
+        System.out.println("Preparing...");
         myRecorder.prepare();
+        System.out.println("Prepared for recording.");
         myRecorder.start();
+        System.out.println("Started.");
       } catch (final Exception e) {
         cordova.getThreadPool().execute(new Runnable() {
           public void run() {
@@ -55,13 +58,11 @@ public class AudioRecorder extends CordovaPlugin {
         });
         return false;
       }
-
-      countDowntimer.start();
       return true;
     }
 
     if (action.equals("stop")) {
-      countDowntimer.cancel();
+      System.out.println("Stopped...");
       stopRecord(callbackContext);
       return true;
     }
