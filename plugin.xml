@@ -24,7 +24,7 @@
   <platform name="android">
     <config-file target="res/xml/config.xml" parent="/*">
       <feature name="AudioRecorder">
-        <param name="android-package" value="com.nodeart.raixur.recorder" />
+        <param name="android-package" value="com.nodeart.raixur.recorder.AudioRecorder" />
       </feature>
     </config-file>
     <config-file target="AndroidManifest.xml" parent="/manifest">
