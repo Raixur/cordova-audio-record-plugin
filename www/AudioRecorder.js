@@ -1,7 +1,7 @@
 function AudioRecorder() {
 }
 
-AudioRecorder.prototype.record = function (successCallback, errorCallback, duration) {
+AudioRecorder.prototype.record = function (successCallback, errorCallback, fileDir) {
   cordova.exec(successCallback, errorCallback, "AudioRecorder", "record", fileDir ? [fileDir] : []);
 };
 
