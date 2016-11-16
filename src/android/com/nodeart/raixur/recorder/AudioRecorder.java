@@ -35,7 +35,7 @@ public class AudioRecorder extends CordovaPlugin {
                 outputFile = UUID.randomUUID().toString();
             }
 
-            String outputDir = context.getExternalCacheDir().getAbsoluteFile() + "/" + outputFile + ".m4a"
+            String outputDir = context.getExternalCacheDir().getAbsoluteFile() + "/" + outputFile + ".m4a";
 
             System.out.println("Path: " + outputFile);
             myRecorder = new MediaRecorder();
