@@ -37,7 +37,7 @@ public class AudioRecorder extends CordovaPlugin {
 
             String outputDir = context.getExternalCacheDir().getAbsoluteFile() + "/" + outputFile + ".m4a";
 
-            System.out.println("Path: " + outputFile);
+            System.out.println("Path: " + outputDir);
             myRecorder = new MediaRecorder();
             myRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             myRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
@@ -45,7 +45,7 @@ public class AudioRecorder extends CordovaPlugin {
             myRecorder.setAudioSamplingRate(44100);
             myRecorder.setAudioChannels(1);
             myRecorder.setAudioEncodingBitRate(32000);
-            myRecorder.setOutputFile(outputFile);
+            myRecorder.setOutputFile(outputDir);
 
             try {
                 System.out.println("Preparing...");
