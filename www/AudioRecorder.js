@@ -1,12 +1,16 @@
 function AudioRecorder() {
 }
 
-AudioRecorder.prototype.record = function (successCallback, errorCallback, fileDir) {
-  cordova.exec(successCallback, errorCallback, "AudioRecorder", "record", fileDir ? [fileDir] : []);
+AudioRecorder.prototype.record = function (successCallback, errorCallback, fileName, duration) {
+  cordova.exec(successCallback, errorCallback, "AudioRecorder", "record", [fileName, String(duration)]);
 };
 
-AudioRecorder.prototype.stop = function (successCallback, errorCallback) {
-  cordova.exec(successCallback, errorCallback, "AudioRecorder", "stop", []);
+AudioRecorder.prototype.startRecord = function (successCallback, errorCallback, fileName) {
+  cordova.exec(successCallback, errorCallback, "AudioRecorder", "startRecord", [fileName]);
+};
+
+AudioRecorder.prototype.stopRecord = function (successCallback, errorCallback ) {
+  cordova.exec(successCallback, errorCallback, "AudioRecorder", "stopRecord", []);
 };
 
 AudioRecorder.install = function () {
