@@ -44,7 +44,7 @@ public class CordovaRecorder extends CordovaPlugin {
         return false;
     }
 
-    private void record(CallbackContext callbackContext) {
+    private void record(final CallbackContext callbackContext) {
         recorder.start();
 
         Handler handler = new Handler();
@@ -52,10 +52,9 @@ public class CordovaRecorder extends CordovaPlugin {
             @Override
             public void run() {
                 recorder.release();
+                callbackContext.success(outputPath);
             }
         }, duration);
-
-        callbackContext.success(outputPath);
     }
 
     private void startRecord() {
@@ -83,7 +82,7 @@ public class CordovaRecorder extends CordovaPlugin {
             duration = 0;
         }
 
-        outputPath = context.getExternalCacheDir().getAbsoluteFile() + "/" + outputFile + ".m4a";
+        outputPath = context.getExternalCacheDir().getAbsoluteFile() + "/" + outputFile + ".wav";
 
         recorder = new AudioRecorder(RECORDING_DEVICE, SAMPLE_RATE,
                     CHANNEL_CONFIG, AUDIO_ENCODING);
