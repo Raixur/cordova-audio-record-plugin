@@ -15,7 +15,6 @@ import java.util.UUID;
 public class CordovaRecorder extends CordovaPlugin {
 
     private static final int RECORDING_DEVICE = MediaRecorder.AudioSource.MIC;
-    private static final int SAMPLE_RATE = 44100;
     private static final int CHANNEL_CONFIG = AudioFormat.CHANNEL_IN_MONO;
     private static final int AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
 
@@ -66,6 +65,16 @@ public class CordovaRecorder extends CordovaPlugin {
         callbackContext.success(outputPath);
     }
 
+    private int getDeviceSampleRate() {
+        for (int rate : new int[] {44100, 22050, 16000, 11025, 8000}) {
+            int bufferSize = AudioRecord.getMinBufferSize(rate, AudioFormat.CHANNEL_CONFIGURATION_DEFAULT, AudioFormat.ENCODING_PCM_16BIT);
+            if ( bufferSize > 0) {
+                return rate;
+	    }
+        }
+        return 0;
+    }
+
     private void initRecord(JSONArray args) throws JSONException {
         Context context = cordova.getActivity().getApplicationContext();
         String outputFile;
@@ -84,7 +93,9 @@ public class CordovaRecorder extends CordovaPlugin {
 
         outputPath = context.getExternalCacheDir().getAbsoluteFile() + "/" + outputFile + ".wav";
 
-        recorder = new AudioRecorder(RECORDING_DEVICE, SAMPLE_RATE,
+	
+
+        recorder = new AudioRecorder(RECORDING_DEVICE, getDeviceSampleRate(),
                     CHANNEL_CONFIG, AUDIO_ENCODING);
         recorder.setOutputFile(outputPath);
         recorder.prepare();
