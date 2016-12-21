@@ -18,6 +18,7 @@ public class CordovaRecorder extends CordovaPlugin {
     private static final int RECORDING_DEVICE = MediaRecorder.AudioSource.MIC;
     private static final int CHANNEL_CONFIG = AudioFormat.CHANNEL_IN_MONO;
     private static final int AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
+    private static final int SAMPLE_RATE = 44100;
 
     private AudioRecorder recorder;
 
@@ -66,24 +67,14 @@ public class CordovaRecorder extends CordovaPlugin {
         callbackContext.success(outputPath);
     }
 
-    private int getDeviceSampleRate() {
-        for (int rate : new int[] {44100, 22050, 16000, 11025, 8000}) {
-            int bufferSize = AudioRecord.getMinBufferSize(rate, AudioFormat.CHANNEL_CONFIGURATION_DEFAULT, AudioFormat.ENCODING_PCM_16BIT);
-            if ( bufferSize > 0) {
-                return rate;
-	    }
-        }
-        return 0;
-    }
-
     private void initRecord(JSONArray args) throws JSONException {
         Context context = cordova.getActivity().getApplicationContext();
-        String outputFile;
+        String outputPath;
 
         if (args.length() >= 1) {
-            outputFile = args.getString(0);
+            outputPath = args.getString(0);
         } else {
-            outputFile = UUID.randomUUID().toString();
+            outputPath = context.getExternalCacheDir().getAbsoluteFile() + "/" + UUID.randomUUID().toString() + ".wav";
         }
 
         if (args.length() >= 2) {
@@ -92,11 +83,7 @@ public class CordovaRecorder extends CordovaPlugin {
             duration = 0;
         }
 
-        outputPath = context.getExternalCacheDir().getAbsoluteFile() + "/" + outputFile + ".wav";
-
-	
-
-        recorder = new AudioRecorder(RECORDING_DEVICE, getDeviceSampleRate(),
+        recorder = new AudioRecorder(RECORDING_DEVICE, SAMPLE_RATE,
                     CHANNEL_CONFIG, AUDIO_ENCODING);
         recorder.setOutputFile(outputPath);
         recorder.prepare();
