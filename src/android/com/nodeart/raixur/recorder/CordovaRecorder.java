@@ -34,7 +34,7 @@ public class CordovaRecorder extends CordovaPlugin {
         }
         else if(action.equals("startRecord")) {
             initRecord(args);
-            startRecord();
+            startRecord(callbackContext);
             return true;
         }
         else if(action.equals("stopRecord")) {
@@ -57,8 +57,9 @@ public class CordovaRecorder extends CordovaPlugin {
         }, duration);
     }
 
-    private void startRecord() {
+    private void startRecord(CallbackContext callbackContext) {
         recorder.start();
+        callbackContext.success(recorder.getState().toString());
     }
 
     private void stopRecord(CallbackContext callbackContext) {
